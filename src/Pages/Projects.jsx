@@ -6,7 +6,8 @@ const initialProjects = [
     id: 1,
     title: "Hospital Management System",
     client: "ABC Healthcare",
-    description: "A system to manage appointments, billing, and medical records.",
+    description:
+      "A system to manage appointments, billing, and medical records.",
     status: "Ongoing",
     progress: 60,
     startDate: "2025-01-15",
@@ -15,7 +16,8 @@ const initialProjects = [
     id: 2,
     title: "E-Commerce Platform",
     client: "XYZ Retail",
-    description: "Full-stack e-commerce website with payment gateway integration.",
+    description:
+      "Full-stack e-commerce website with payment gateway integration.",
     status: "Completed",
     progress: 100,
     startDate: "2024-11-01",
@@ -24,7 +26,8 @@ const initialProjects = [
     id: 3,
     title: "Smart Plant Monitor",
     client: "GreenTech",
-    description: "IoT system to monitor plant health with sensors and dashboard.",
+    description:
+      "IoT system to monitor plant health with sensors and dashboard.",
     status: "Pending",
     progress: 20,
     startDate: "2025-03-01",
@@ -72,9 +75,7 @@ const ProjectSection = () => {
     if (isEditing) {
       // Update existing project
       setProjects(
-        projects.map((p) =>
-          p.id === newProject.id ? { ...newProject } : p
-        )
+        projects.map((p) => (p.id === newProject.id ? { ...newProject } : p))
       );
       setIsEditing(false);
     } else {
@@ -115,35 +116,47 @@ const ProjectSection = () => {
   return (
     <section className="py-12 px-6 bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold text-left mb-8 text-gray-900">
-        📂 Client Projects
+        📂 Projects
       </h2>
 
       {/* Controls */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <input
-          type="text"
-          placeholder="🔍 Search projects..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-1/3 px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200 hover:scale-105"
-        />
+      <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-8 gap-6">
+        {/* Left side: Search + Filters */}
+        <div className="flex flex-col gap-3 w-full md:w-auto">
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="🔍 Search projects..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full md:w-80 px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+          />
 
-        <div className="flex gap-4">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border rounded-lg shadow-sm hover:scale-105 hover:bg-blue-300 hover:shadow-2xl hover:-translate-y-1"
-          >
-            <option value="All">All Status</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Completed">Completed</option>
-            <option value="Pending">Pending</option>
-          </select>
+          {/* Status Filter Buttons */}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {["All", "Ongoing", "Completed", "Pending"].map((status) => (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 
+            ${
+              statusFilter === status
+                ? "bg-blue-600 text-white border-blue-600"
+                : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+            }`}
+              >
+                {status === "All" ? "All Projects" : status}
+              </button>
+            ))}
+          </div>
+        </div>
 
+        {/* Right side: Sort + Add Project */}
+        <div className="flex items-center gap-4">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border rounded-lg shadow-sm hover:scale-105 hover:bg-blue-300 hover:shadow-2xl hover:-translate-y-1"
+            className="px-4 py-2 border rounded-lg shadow-sm hover:bg-gray-100"
           >
             <option value="date">Sort by Date</option>
             <option value="progress">Sort by Progress</option>
@@ -154,14 +167,13 @@ const ProjectSection = () => {
               setShowForm(true);
               setIsEditing(false);
             }}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 cursor-pointer hover:scale-105"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700"
           >
             + Add Project
           </button>
         </div>
       </div>
 
-      {/* Project Cards */}
       {/* Project Cards */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project) => (
@@ -183,12 +195,13 @@ const ProjectSection = () => {
               <p className="text-sm text-gray-600 mb-1">
                 Status:{" "}
                 <span
-                  className={`font-medium ${project.status === "Completed"
-                    ? "text-green-600"
-                    : project.status === "Ongoing"
+                  className={`font-medium ${
+                    project.status === "Completed"
+                      ? "text-green-600"
+                      : project.status === "Ongoing"
                       ? "text-blue-600"
                       : "text-yellow-600"
-                    }`}
+                  }`}
                 >
                   {project.status}
                 </span>
@@ -209,7 +222,6 @@ const ProjectSection = () => {
           </div>
         ))}
       </div>
-
 
       {/* Project Details Modal */}
       {selectedProject && (
